@@ -25,6 +25,7 @@
                     <a class="nav-link text-white" href="{{ url_for('main.index') }}">Главная</a>
                     <a class="nav-link text-white" href="{{ url_for('clients.list_clients') }}">Клиенты</a>
                     <a class="nav-link text-white" href="{{ url_for('masters.list_masters') }}">Мастера</a>
+                    <a class="nav-link text-white" href="{{ url_for('services.list_services') }}">Услуги</a>
 
                     <span class="small text-white">
                         {{ current_user.full_name }} ({{ current_user.role.name }})

@@ -23,10 +23,12 @@ def create_app():
     from app.routes.auth import auth_bp
     from app.routes.clients import clients_bp
     from app.routes.masters import masters_bp
+    from app.routes.services import services_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(clients_bp)
     app.register_blueprint(masters_bp)
+    app.register_blueprint(services_bp)
 
     return app
