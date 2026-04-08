@@ -4,14 +4,14 @@
 
 {% block content %}
 <div class="p-4 p-md-5 mb-4 bg-light rounded-3 shadow-sm">
-    <div class="container-fluid py-3">
-        <h1 class="display-6 fw-bold">АРМ администратора салона красоты</h1>
+    <div class="container-fluid py-2">
+        <h1 class="display-6 fw-bold">Добро пожаловать в АРМ администратора</h1>
         <p class="col-md-10 fs-5">
-            Веб-приложение для автоматизации работы администратора
-            салона красоты "Эстетика".
+            Пользователь: <strong>{{ current_user.full_name }}</strong><br>
+            Роль: <strong>{{ current_user.role.name }}</strong>
         </p>
         <p class="mb-0 text-muted">
-            Текущий этап: базовый каркас проекта.
+            На текущем этапе реализованы базовая авторизация и разграничение доступа.
         </p>
     </div>
 </div>
