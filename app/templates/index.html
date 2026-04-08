@@ -36,8 +36,11 @@
             <div class="card-body">
                 <h5 class="card-title">Записи</h5>
                 <p class="card-text">
-                    Создание, перенос и отмена записей клиентов.
+                    Создание, перенос, отмена и просмотр журнала записей клиентов.
                 </p>
+                <a href="{{ url_for('appointments.list_appointments') }}" class="btn btn-outline-dark btn-sm">
+                    Открыть раздел
+                </a>
             </div>
         </div>
     </div>

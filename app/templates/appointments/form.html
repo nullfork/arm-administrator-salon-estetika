@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% if appointment %}
+    {% set page_title = "Редактирование записи" %}
+{% else %}
+    {% set page_title = "Новая запись" %}
+{% endif %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">{{ page_title }}</h1>
+                <p class="text-muted mb-0">Оформление записи клиента</p>
+            </div>
+            <a href="{{ url_for('appointments.list_appointments') }}" class="btn btn-outline-secondary">
+                Назад
+            </a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="client_id" class="form-label">Клиент</label>
+                        <select class="form-select" id="client_id" name="client_id" required>
+                            <option value="">Выберите клиента</option>
+                            {% for client in clients %}
+                                <option value="{{ client.id }}" {% if appointment and appointment.client_id == client.id %}selected{% endif %}>
+                                    {{ client.full_name }} — {{ client.phone }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="master_id" class="form-label">Мастер</label>
+                        <select class="form-select" id="master_id" name="master_id" required>
+                            <option value="">Выберите мастера</option>
+                            {% for master in masters %}
+                                <option value="{{ master.id }}" {% if appointment and appointment.master_id == master.id %}selected{% endif %}>
+                                    {{ master.full_name }} — {{ master.specialty }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="service_id" class="form-label">Услуга</label>
+                        <select class="form-select" id="service_id" name="service_id" required>
+                            <option value="">Выберите услугу</option>
+                            {% for service in services %}
+                                <option value="{{ service.id }}" {% if appointment and appointment.service_id == service.id %}selected{% endif %}>
+                                    {{ service.name }} ({{ service.duration_min }} мин., {{ "%.2f"|format(service.base_price) }} ₽)
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="start_time" class="form-label">Дата и время начала</label>
+                        <input
+                            type="datetime-local"
+                            class="form-control"
+                            id="start_time"
+                            name="start_time"
+                            value="{% if appointment %}{{ appointment.start_time.strftime('%Y-%m-%dT%H:%M') }}{% endif %}"
+                            required
+                        >
+                    </div>
+
+                    {% if appointment %}
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Статус</label>
+                            <select class="form-select" id="status" name="status" required>
+                                {% for status in status_choices %}
+                                    <option value="{{ status }}" {% if appointment.status == status %}selected{% endif %}>
+                                        {{ status }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Примечание</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3">{{ appointment.notes if appointment else '' }}</textarea>
+                    </div>
+
+                    {% if appointment %}
+                        <div class="mb-3">
+                            <label for="cancel_reason" class="form-label">Причина отмены</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="cancel_reason"
+                                name="cancel_reason"
+                                value="{{ appointment.cancel_reason if appointment else '' }}"
+                            >
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('appointments.list_appointments') }}" class="btn btn-outline-secondary">
+                            Отмена
+                        </a>
+                        <button type="submit" class="btn btn-dark">
+                            {% if appointment %}Сохранить изменения{% else %}Создать запись{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
