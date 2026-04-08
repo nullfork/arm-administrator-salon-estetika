@@ -20,20 +20,24 @@
                 АРМ салона "Эстетика"
             </a>
 
-            <div class="d-flex align-items-center text-white gap-3">
-                {% if current_user.is_authenticated %}
-                    <span class="small">
+            {% if current_user.is_authenticated %}
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <a class="nav-link text-white" href="{{ url_for('main.index') }}">Главная</a>
+                    <a class="nav-link text-white" href="{{ url_for('clients.list_clients') }}">Клиенты</a>
+
+                    <span class="small text-white">
                         {{ current_user.full_name }} ({{ current_user.role.name }})
                     </span>
+
                     <a class="btn btn-sm btn-outline-light" href="{{ url_for('auth.logout') }}">
                         Выйти
                     </a>
-                {% else %}
-                    <a class="btn btn-sm btn-outline-light" href="{{ url_for('auth.login') }}">
-                        Войти
-                    </a>
-                {% endif %}
-            </div>
+                </div>
+            {% else %}
+                <a class="btn btn-sm btn-outline-light" href="{{ url_for('auth.login') }}">
+                    Войти
+                </a>
+            {% endif %}
         </div>
     </nav>
 
