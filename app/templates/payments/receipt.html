@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Квитанция{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">Квитанция об оплате</h1>
+                <p class="text-muted mb-0">Подтверждение оплаты услуги</p>
+            </div>
+            <a href="{{ url_for('appointments.list_appointments', date=payment.appointment.start_time.date().isoformat()) }}" class="btn btn-outline-secondary">
+                К журналу записей
+            </a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <h2 class="h4 mb-1">Салон красоты "Эстетика"</h2>
+                    <div class="text-muted">Квитанция № {{ payment.receipt_no }}</div>
+                </div>
+
+                <hr>
+
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Дата оплаты:</strong></div>
+                    <div class="col-md-6">{{ payment.paid_at.strftime("%d.%m.%Y %H:%M") }}</div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Клиент:</strong></div>
+                    <div class="col-md-6">{{ payment.appointment.client.full_name }}</div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Мастер:</strong></div>
+                    <div class="col-md-6">{{ payment.appointment.master.full_name }}</div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Услуга:</strong></div>
+                    <div class="col-md-6">{{ payment.appointment.service.name }}</div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Дата и время визита:</strong></div>
+                    <div class="col-md-6">{{ payment.appointment.start_time.strftime("%d.%m.%Y %H:%M") }}</div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-6"><strong>Способ оплаты:</strong></div>
+                    <div class="col-md-6">{{ payment.payment_method }}</div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6"><strong>Сумма:</strong></div>
+                    <div class="col-md-6"><strong>{{ "%.2f"|format(payment.amount) }} ₽</strong></div>
+                </div>
+
+                <hr>
+
+                <div class="text-center text-muted small">
+                    Документ сформирован автоматически в АРМ администратора салона красоты.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

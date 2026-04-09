@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Оплата{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">Оформление оплаты</h1>
+                <p class="text-muted mb-0">Оплата по записи клиента</p>
+            </div>
+            <a href="{{ url_for('appointments.list_appointments', date=appointment.start_time.date().isoformat()) }}" class="btn btn-outline-secondary">
+                Назад
+            </a>
+        </div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Информация о записи</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <strong>Клиент:</strong> {{ appointment.client.full_name }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <strong>Мастер:</strong> {{ appointment.master.full_name }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <strong>Услуга:</strong> {{ appointment.service.name }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <strong>Время:</strong> {{ appointment.start_time.strftime("%d.%m.%Y %H:%M") }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <strong>Стоимость:</strong> {{ "%.2f"|format(appointment.price_at_booking) }} ₽
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <strong>Статус:</strong> {{ appointment.status }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Сумма оплаты</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            class="form-control"
+                            id="amount"
+                            name="amount"
+                            value="{{ appointment.price_at_booking }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="payment_method" class="form-label">Способ оплаты</label>
+                        <select class="form-select" id="payment_method" name="payment_method" required>
+                            <option value="">Выберите способ оплаты</option>
+                            {% for method in payment_methods %}
+                                <option value="{{ method }}">{{ method }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('appointments.list_appointments', date=appointment.start_time.date().isoformat()) }}" class="btn btn-outline-secondary">
+                            Отмена
+                        </a>
+                        <button type="submit" class="btn btn-dark">
+                            Провести оплату
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

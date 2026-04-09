@@ -104,7 +104,23 @@
                                         Редактировать
                                     </a>
 
-                                    {% if appointment.status != "cancelled" %}
+                                    {% if appointment.payment %}
+                                        <a
+                                            href="{{ url_for('payments.receipt', payment_id=appointment.payment.id) }}"
+                                            class="btn btn-sm btn-outline-success"
+                                        >
+                                            Квитанция
+                                        </a>
+                                    {% elif appointment.status != "cancelled" %}
+                                        <a
+                                            href="{{ url_for('payments.create_payment', appointment_id=appointment.id) }}"
+                                            class="btn btn-sm btn-outline-dark"
+                                        >
+                                            Оплатить
+                                        </a>
+                                    {% endif %}
+
+                                    {% if appointment.status != "cancelled" and not appointment.payment %}
                                         <form
                                             method="post"
                                             action="{{ url_for('appointments.cancel_appointment', appointment_id=appointment.id) }}"
