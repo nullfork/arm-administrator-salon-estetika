@@ -78,7 +78,7 @@
                             <select class="form-select" id="status" name="status" required>
                                 {% for status in status_choices %}
                                     <option value="{{ status }}" {% if appointment.status == status %}selected{% endif %}>
-                                        {{ status }}
+                                        {{ status_labels[status] }}
                                     </option>
                                 {% endfor %}
                             </select>
@@ -86,8 +86,14 @@
                     {% endif %}
 
                     <div class="mb-3">
-                        <label for="notes" class="form-label">Примечание</label>
-                        <textarea class="form-control" id="notes" name="notes" rows="3">{{ appointment.notes if appointment else '' }}</textarea>
+                        <label for="notes" class="form-label">Заметки к записи</label>
+                        <textarea
+                            class="form-control"
+                            id="notes"
+                            name="notes"
+                            rows="4"
+                            placeholder="Например: клиент просил напомнить за 2 часа, предпочитает конкретного мастера, есть дополнительные пожелания"
+                        >{{ appointment.notes if appointment else '' }}</textarea>
                     </div>
 
                     {% if appointment %}
@@ -99,6 +105,7 @@
                                 id="cancel_reason"
                                 name="cancel_reason"
                                 value="{{ appointment.cancel_reason if appointment else '' }}"
+                                placeholder="Указывается только для отменённых записей"
                             >
                         </div>
                     {% endif %}

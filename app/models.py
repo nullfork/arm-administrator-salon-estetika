@@ -19,7 +19,6 @@ class Role(db.Model):
         return f"<Role {self.name}>"
 
 
-
 class User(UserMixin, db.Model):
     __tablename__ = "users"
 
@@ -48,10 +47,9 @@ class User(UserMixin, db.Model):
 
     def has_role(self, role_name: str) -> bool:
         return self.role is not None and self.role.name == role_name
-    
+
     def __repr__(self):
         return f"<User {self.username}>"
-
 
 
 class Client(db.Model):
@@ -69,7 +67,6 @@ class Client(db.Model):
 
     def __repr__(self):
         return f"<Client {self.full_name}>"
-
 
 
 class Master(db.Model):
@@ -90,7 +87,6 @@ class Master(db.Model):
         return f"<Master {self.full_name}>"
 
 
-
 class ServiceCategory(db.Model):
     __tablename__ = "service_categories"
 
@@ -102,7 +98,6 @@ class ServiceCategory(db.Model):
 
     def __repr__(self):
         return f"<ServiceCategory {self.name}>"
-
 
 
 class Service(db.Model):
@@ -128,7 +123,6 @@ class Service(db.Model):
         return f"<Service {self.name}>"
 
 
-
 class Appointment(db.Model):
     __tablename__ = "appointments"
 
@@ -137,6 +131,22 @@ class Appointment(db.Model):
     STATUS_COMPLETED = "completed"
     STATUS_CANCELLED = "cancelled"
     STATUS_NO_SHOW = "no_show"
+
+    STATUS_LABELS = {
+        STATUS_PLANNED: "Запланирована",
+        STATUS_CONFIRMED: "Подтверждена",
+        STATUS_COMPLETED: "Выполнена",
+        STATUS_CANCELLED: "Отменена",
+        STATUS_NO_SHOW: "Неявка",
+    }
+
+    STATUS_BADGES = {
+        STATUS_PLANNED: "primary",
+        STATUS_CONFIRMED: "info",
+        STATUS_COMPLETED: "success",
+        STATUS_CANCELLED: "secondary",
+        STATUS_NO_SHOW: "danger",
+    }
 
     id = db.Column(db.Integer, primary_key=True)
     client_id = db.Column(db.Integer, db.ForeignKey("clients.id"), nullable=False)
@@ -177,9 +187,16 @@ class Appointment(db.Model):
         db.Index("idx_appointments_status_start", "status", "start_time"),
     )
 
+    @property
+    def status_label(self) -> str:
+        return self.STATUS_LABELS.get(self.status, self.status)
+
+    @property
+    def status_badge(self) -> str:
+        return self.STATUS_BADGES.get(self.status, "light")
+
     def __repr__(self):
         return f"<Appointment {self.id}: {self.start_time}>"
-
 
 
 class Payment(db.Model):
