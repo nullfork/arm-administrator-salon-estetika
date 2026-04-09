@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% if client %}
+    {% set page_title = "Редактирование клиента" %}
+{% else %}
+    {% set page_title = "Добавление клиента" %}
+{% endif %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h3 mb-1">{{ page_title }}</h1>
+                <p class="text-muted mb-0">Заполнение карточки клиента</p>
+            </div>
+            <a href="{{ url_for('clients.list_clients') }}" class="btn btn-outline-secondary">
+                Назад
+            </a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">ФИО</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="full_name"
+                            name="full_name"
+                            value="{{ client.full_name if client else '' }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">Телефон</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="phone"
+                                name="phone"
+                                value="{{ client.phone if client else '' }}"
+                                required
+                            >
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                name="email"
+                                value="{{ client.email if client else '' }}"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="birth_date" class="form-label">Дата рождения</label>
+                        <input
+                            type="date"
+                            class="form-control"
+                            id="birth_date"
+                            name="birth_date"
+                            value="{{ client.birth_date.isoformat() if client and client.birth_date else '' }}"
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Примечание</label>
+                        <textarea
+                            class="form-control"
+                            id="notes"
+                            name="notes"
+                            rows="4"
+                        >{{ client.notes if client else '' }}</textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('clients.list_clients') }}" class="btn btn-outline-secondary">
+                            Отмена
+                        </a>
+                        <button type="submit" class="btn btn-dark">
+                            {% if client %}Сохранить изменения{% else %}Добавить клиента{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
