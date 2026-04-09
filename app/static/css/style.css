@@ -1,11 +1,107 @@
 body {
-    background-color: #f8f9fa;
+    background-color: #f5f6f8;
+    color: #212529;
+}
+
+.app-navbar {
+    background: linear-gradient(90deg, #1f1f24 0%, #2c2f36 100%);
 }
 
 .navbar-brand {
-    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.navbar .nav-link {
+    color: rgba(255, 255, 255, 0.88);
+    transition: color 0.2s ease;
+}
+
+.navbar .nav-link:hover {
+    color: #ffffff;
+}
+
+.app-user-panel {
+    min-height: 42px;
+}
+
+.app-hero {
+    background: linear-gradient(135deg, #ffffff 0%, #f1f3f7 100%);
+    border-radius: 18px;
+    padding: 2rem;
+}
+
+.app-summary-card {
+    border-radius: 16px;
+}
+
+.app-feature-card {
+    border: none;
+    border-radius: 16px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.app-feature-card:hover {
+    transform: translateY(-2px);
+}
+
+.app-feature-icon {
+    font-size: 1.7rem;
+    margin-bottom: 0.75rem;
 }
 
 .card-title {
     font-weight: 600;
+}
+
+.table {
+    font-size: 0.95rem;
+}
+
+.table thead th {
+    white-space: nowrap;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+}
+
+.btn {
+    border-radius: 10px;
+}
+
+.form-control,
+.form-select,
+textarea {
+    border-radius: 10px;
+}
+
+.alert {
+    border-radius: 12px;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.7em;
+}
+
+.page-subtitle {
+    color: #6c757d;
+}
+
+.empty-state {
+    padding: 2rem;
+    text-align: center;
+    color: #6c757d;
+}
+
+@media (max-width: 991px) {
+    .app-user-panel {
+        margin-top: 1rem;
+        align-items: flex-start !important;
+    }
+
+    .app-hero {
+        padding: 1.5rem;
+    }
 }

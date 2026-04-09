@@ -3,26 +3,51 @@
 {% block title %}Главная{% endblock %}
 
 {% block content %}
-<div class="p-4 p-md-5 mb-4 bg-light rounded-3 shadow-sm">
-    <div class="container-fluid py-2">
-        <h1 class="display-6 fw-bold">Добро пожаловать в АРМ администратора</h1>
-        <p class="col-md-10 fs-5">
-            Пользователь: <strong>{{ current_user.full_name }}</strong><br>
-            Роль: <strong>{{ current_user.role.name }}</strong>
-        </p>
-        <p class="mb-0 text-muted">
-            На текущем этапе реализованы базовая авторизация и разграничение доступа.
-        </p>
+<div class="app-hero shadow-sm mb-4">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+            <h1 class="display-6 fw-bold mb-3">Автоматизированное рабочее место администратора</h1>
+            <p class="lead mb-3">
+                Система предназначена для ведения клиентской базы, управления записями,
+                оформления оплаты и формирования отчётности в салоне красоты "Эстетика".
+            </p>
+            <div class="text-muted">
+                Текущий пользователь:
+                <strong>{{ current_user.full_name }}</strong>,
+                роль:
+                <strong>{{ current_user.role.description or current_user.role.name }}</strong>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm app-summary-card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Быстрый доступ</h5>
+                    <div class="d-grid gap-2">
+                        <a href="{{ url_for('appointments.list_appointments') }}" class="btn btn-dark">
+                            Журнал записей
+                        </a>
+                        <a href="{{ url_for('clients.list_clients') }}" class="btn btn-outline-dark">
+                            Клиентская база
+                        </a>
+                        <a href="{{ url_for('reports.index') }}" class="btn btn-outline-dark">
+                            Отчёты
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="row g-4">
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100 shadow-sm app-feature-card">
             <div class="card-body">
+                <div class="app-feature-icon">👥</div>
                 <h5 class="card-title">Клиенты</h5>
                 <p class="card-text">
-                    Ведение клиентской базы и истории посещений.
+                    Ведение клиентской базы, контактных данных, истории посещений и заметок.
                 </p>
                 <a href="{{ url_for('clients.list_clients') }}" class="btn btn-outline-dark btn-sm">
                     Открыть раздел
@@ -31,9 +56,40 @@
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100 shadow-sm app-feature-card">
             <div class="card-body">
+                <div class="app-feature-icon">🧑‍🔧</div>
+                <h5 class="card-title">Мастера</h5>
+                <p class="card-text">
+                    Справочник сотрудников, специализации, контактные данные и статус активности.
+                </p>
+                <a href="{{ url_for('masters.list_masters') }}" class="btn btn-outline-dark btn-sm">
+                    Открыть раздел
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100 shadow-sm app-feature-card">
+            <div class="card-body">
+                <div class="app-feature-icon">💅</div>
+                <h5 class="card-title">Услуги</h5>
+                <p class="card-text">
+                    Управление перечнем услуг, категориями, длительностью и стоимостью.
+                </p>
+                <a href="{{ url_for('services.list_services') }}" class="btn btn-outline-dark btn-sm">
+                    Открыть раздел
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100 shadow-sm app-feature-card">
+            <div class="card-body">
+                <div class="app-feature-icon">📅</div>
                 <h5 class="card-title">Записи</h5>
                 <p class="card-text">
                     Журнал записей с фильтрацией, заметками, быстрым изменением статусов и переходом к оплате.
@@ -45,38 +101,28 @@
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100 shadow-sm app-feature-card">
             <div class="card-body">
-                <h5 class="card-title">Мастера</h5>
+                <div class="app-feature-icon">💳</div>
+                <h5 class="card-title">Оплата</h5>
                 <p class="card-text">
-                    Ведение справочника сотрудников и их специализаций.
+                    Проведение оплаты по записи, формирование квитанции и завершение визита.
                 </p>
-                <a href="{{ url_for('masters.list_masters') }}" class="btn btn-outline-dark btn-sm">
-                    Открыть раздел
+                <a href="{{ url_for('appointments.list_appointments') }}" class="btn btn-outline-dark btn-sm">
+                    Перейти к записям
                 </a>
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
+
+    <div class="col-md-6 col-xl-4">
+        <div class="card h-100 shadow-sm app-feature-card">
             <div class="card-body">
-                <h5 class="card-title">Услуги</h5>
-                <p class="card-text">
-                    Ведение перечня услуг, категорий, стоимости и длительности.
-                </p>
-                <a href="{{ url_for('services.list_services') }}" class="btn btn-outline-dark btn-sm">
-                    Открыть раздел
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card h-100 shadow-sm">
-            <div class="card-body">
+                <div class="app-feature-icon">📊</div>
                 <h5 class="card-title">Отчёты</h5>
                 <p class="card-text">
-                    Аналитика по выручке, мастерам, услугам и расписанию.
+                    Аналитика по выручке, мастерам, услугам и расписанию на выбранный день.
                 </p>
                 <a href="{{ url_for('reports.index') }}" class="btn btn-outline-dark btn-sm">
                     Открыть раздел
