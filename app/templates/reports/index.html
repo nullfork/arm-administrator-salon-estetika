@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Отчёты{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Отчёты</h1>
+        <p class="text-muted mb-0">Аналитика по услугам, мастерам и записям</p>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label for="date_from" class="form-label">Период с</label>
+                <input type="date" class="form-control" id="date_from" name="date_from" value="{{ date_from }}">
+            </div>
+
+            <div class="col-md-3">
+                <label for="date_to" class="form-label">Период по</label>
+                <input type="date" class="form-control" id="date_to" name="date_to" value="{{ date_to }}">
+            </div>
+
+            <div class="col-md-3">
+                <label for="selected_date" class="form-label">Дата расписания</label>
+                <input type="date" class="form-control" id="selected_date" name="selected_date" value="{{ selected_date }}">
+            </div>
+
+            <div class="col-md-3 d-grid">
+                <button type="submit" class="btn btn-dark">Сформировать</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Общая выручка</h5>
+                <p class="display-6 mb-0">{{ "%.2f"|format(total_revenue) }} ₽</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Количество оплат</h5>
+                <p class="display-6 mb-0">{{ total_payments }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Записей на день</h5>
+                <p class="display-6 mb-0">{{ total_daily_appointments }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <strong>Выручка по услугам</strong>
+    </div>
+    <div class="card-body p-0">
+        {% if revenue_rows %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Услуга</th>
+                            <th>Количество оплат</th>
+                            <th>Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in revenue_rows %}
+                            <tr>
+                                <td>{{ row.service_name }}</td>
+                                <td>{{ row.payments_count }}</td>
+                                <td>{{ "%.2f"|format(row.total_amount or 0) }} ₽</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-4 text-center text-muted">
+                За выбранный период данные о выручке отсутствуют.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <strong>Отчёт по мастерам</strong>
+    </div>
+    <div class="card-body p-0">
+        {% if masters_rows %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Мастер</th>
+                            <th>Количество оплат</th>
+                            <th>Общая сумма</th>
+                            <th>Средний чек</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in masters_rows %}
+                            <tr>
+                                <td>{{ row.master_name }}</td>
+                                <td>{{ row.payments_count }}</td>
+                                <td>{{ "%.2f"|format(row.total_amount or 0) }} ₽</td>
+                                <td>{{ "%.2f"|format(row.avg_amount or 0) }} ₽</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-4 text-center text-muted">
+                За выбранный период данные по мастерам отсутствуют.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header">
+        <strong>Популярность услуг</strong>
+    </div>
+    <div class="card-body p-0">
+        {% if services_rows %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Услуга</th>
+                            <th>Всего записей</th>
+                            <th>Выполнено</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in services_rows %}
+                            <tr>
+                                <td>{{ row.service_name }}</td>
+                                <td>{{ row.appointments_count }}</td>
+                                <td>{{ row.completed_count or 0 }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-4 text-center text-muted">
+                За выбранный период данные по услугам отсутствуют.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-header">
+        <strong>Расписание на выбранный день</strong>
+    </div>
+    <div class="card-body p-0">
+        {% if daily_rows %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Время</th>
+                            <th>Клиент</th>
+                            <th>Мастер</th>
+                            <th>Услуга</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in daily_rows %}
+                            <tr>
+                                <td>
+                                    {{ appointment.start_time.strftime("%H:%M") }} -
+                                    {{ appointment.end_time.strftime("%H:%M") }}
+                                </td>
+                                <td>{{ appointment.client.full_name }}</td>
+                                <td>{{ appointment.master.full_name }}</td>
+                                <td>{{ appointment.service.name }}</td>
+                                <td>{{ appointment.status }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-4 text-center text-muted">
+                На выбранную дату записей нет.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
